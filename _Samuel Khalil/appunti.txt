@@ -1,0 +1,39 @@
+Valutazione:
+18.48/20
+
+---
+
+ristorante -[manyto1]-> tipologia (un ristorante può appartenere ad una sola tipologia, ma ogni tipologia può essere assegnata a più ristoranti)
+Ho deciso di usare `on_delete=models.PROTECT` perché secondo me ha senso che all'eliminazione di una tipologia non vengano anche eliminati i ristoranti che gli appartengono (una tipologia potrebbe essere eliminata per sbaglio, e se esiste ancora un ristorante nel DB non ha senso che venga eliminato per alcun motivo al di fuori della sua specifica deliberata eliminazione).
+
+ordine -[manyto1]-> cliente (un cliente può avere più ordini, ma un ordine può appartenere solo ad un cliente)
+ordine -[1tomany]-> ristorante (ogni ordine appartiene ad un singolo ristorante, ma un ristorante può avere più ordini)
+Ho deciso di usare `on_delete=models.PROTECT` su entrambe perché secondo me gli ordini devono essere sempre presenti nel DB, come minimo per ragioni di contabilità, e non ha senso che vengano eliminati, e se sono presenti, è giusto che venga mantenuto il riferimento al cliente, in caso servisse risalire ad esso.
+
+Per gli stati dell'ordine ho scelto di impostare i seguenti 4 stadi, che mi sono sembrati plausibili per un'app di questo tipo:
+- In elaborazione
+- In preparazione
+- In transito
+- Consegnato
+Onestamente non ne ho mai usate, quindi mi sono basato sul tracciamento dei pacchi (come ad esempio quelli di Amazon e simili).
+
+dettagli_ordine -[1to1]-> ordine (ogni ordine è solo presente in un dettaglio ordine, ed ogni dettaglio ordine riguarda solo un ordine)
+Ho deciso di usare `on_delete=models.CASCADE` perché se si decide di eliminare esplicitamente un ordine, credo voglia dire che l'ordine è stato annullato, e quindi non è più necessario conservarne i dettagli (perché effettivamente non è mai avvenuto).
+Parto dal presupposto che se un ordine è effettivamente avvenuto, non verrà presa la decisione di eliminarlo (ovviamente riconosco che è molto possibile che ciò avvenga comunque per errore, e che quindi la soluzione corretta è di fare qualcosa tipo cambiare un campo "deleted" da False a True, che ho scelto di non fare per questioni di tempo).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
