@@ -1,0 +1,53 @@
+python manage.py shell
+from gestione_ristoranti.models import Tipologia
+Tipologia.objects.create(nome="Pizzeria")
+Tipologia.objects.create(nome="Giapponese")
+Tipologia.objects.create(nome="Hamburgeria")
+Tipologia.objects.create(nome="Indiano")
+Tipologia.objects.create(nome="Messicano")
+
+---
+
+from gestione_ristoranti.models import Ristorante
+Ristorante.objects.create(nome="Bella Napoli", Tipologia_id_id="1", telefono="011.123456")
+Ristorante.objects.create(nome="Sushi Zen", tipologia_id_id="2", telefono="011.987654")
+Ristorante.objects.create(nome="Old Wild West", tipologia_id_id="3", telefono="011.555666")
+Ristorante.objects.create(nome="Taj Mahal", tipologia_id_id="4", telefono="011.334455")
+Ristorante.objects.create(nome="El Sombrero", tipologia_id_id="5", telefono="011.667788")
+Ristorante.objects.create(nome="Vesuvio Express", tipologia_id_id="1", telefono="011.998877")
+
+---
+
+from gestione_ristoranti.models import Piatto
+Piatto.objects.create(nome="Pizza Margherita", prezzo="6.00", ristorante_id_id="1")
+Piatto.objects.create(nome="Pizza Diavola", prezzo="7.50", ristorante_id_id="1")
+Piatto.objects.create(nome="Calzone Ripieno", prezzo="8.00", ristorante_id_id="1")
+Piatto.objects.create(nome="Sashimi Salmone (6pz)", prezzo="12.00", ristorante_id_id="2")
+Piatto.objects.create(nome="Uramaki Tiger (8pz)", prezzo="14.00", ristorante_id_id="2")
+Piatto.objects.create(nome="Edamame", prezzo="4.00", ristorante_id_id="2")
+Piatto.objects.create(nome="BBQ Burger", prezzo="10.00", ristorante_id_id="3")
+Piatto.objects.create(nome="Bacon Cheese Burger", prezzo="11.50", ristorante_id_id="3")
+Piatto.objects.create(nome="Patatine Fritte", prezzo="4.00", ristorante_id_id="3")
+Piatto.objects.create(nome="Chicken Tikka Masala", prezzo="13.00", ristorante_id_id="4")
+Piatto.objects.create(nome="Naan al Formaggio", prezzo="3.50", ristorante_id_id="4")
+Piatto.objects.create(nome="Tacos di Manzo", prezzo="9.00", ristorante_id_id="5")
+Piatto.objects.create(nome="Burrito Piccante", prezzo="10.00", ristorante_id_id="5")
+Piatto.objects.create(nome="Pizza Quattro Formaggi", prezzo="8.50", ristorante_id_id="6")
+Piatto.objects.create(nome="Pizza Capricciosa", prezzo="9.00", ristorante_id_id="6")
+
+---
+
+from gestione_ordini.models import Cliente
+Cliente.objects.create(nome="Mario Rossi", email="mario.rossi@email.it", indirizzo="Via Roma 1, Torino")
+Cliente.objects.create(nome="Luigi Verdi", email="luigi.verdi@email.it", indirizzo="Via Po 20, Torino")
+Cliente.objects.create(nome="Giulia Bianchi", email="giulia.bianchi@email.it", indirizzo="Corso Francia 100, Torino")
+Cliente.objects.create(nome="Elena Neri", email="elena.neri@email.it", indirizzo="Piazza Castello 5, Torino")
+Cliente.objects.create(nome="Marco Gialli", email="marco.gialli@email.it", indirizzo="Via Garibaldi 15, Torino")
+
+
+
+
+
+
+
+

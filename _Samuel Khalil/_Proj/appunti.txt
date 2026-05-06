@@ -1,0 +1,64 @@
+Valutazione:
+18.48/20
+
+(creazione testata di base significa solo info di base (tipo chi l'ha fatto e quando))
+
+provato ad aggiungere la creazione testata ed ora non funziona benissimo. indaga sul perché.
+
+---
+
+Nell'impostare gli url per i due moduli ho aggiunto i seguenti due elementi ad urlpatterns:
+```py
+    path("", include("gestione_ristoranti.urls")),
+    path("", include("gestione_ordini.urls"))
+```
+In modo da impostare poi gli endpoint dentro le loro rispettive app.
+
+ristorante -[many-to-one]-> tipologia (un ristorante può appartenere ad una sola tipologia, ma ogni tipologia può essere assegnata a più ristoranti)
+Ho deciso di usare `on_delete=models.PROTECT` perché secondo me ha senso che all'eliminazione di una tipologia non vengano anche eliminati i ristoranti che gli appartengono (una tipologia potrebbe essere eliminata per sbaglio, e se esiste ancora un ristorante nel DB non ha senso che venga eliminato per alcun motivo al di fuori della sua specifica deliberata eliminazione).
+
+piatto -[one-to-many]-> ristorante (un piatto può appartenere ad un solo ristorante, ma un ristorante può avere più di un piatto).
+Ho deciso di usare `on_delete=models.CASCADE`, perché dopo l'eliminazione di un ristorante, non c'è più strettamente bisogno di conservare i suoi piatti, e quindi è secondo me accettabile cancellarli.
+
+ordine -[many-to-one]-> cliente (un cliente può avere più ordini, ma un ordine può appartenere solo ad un cliente)
+ordine -[one-to-many]-> ristorante (ogni ordine appartiene ad un singolo ristorante, ma un ristorante può avere più ordini)
+Ho deciso di usare `on_delete=models.PROTECT` su entrambe perché secondo me gli ordini devono essere sempre presenti nel DB, come minimo per ragioni di contabilità, e non ha senso che vengano eliminati, e se sono presenti, è giusto che venga mantenuto il riferimento al cliente, in caso servisse risalire ad esso.
+
+Per gli stati dell'ordine ho scelto di impostare i seguenti 4 stadi, che mi sono sembrati plausibili per un'app di questo tipo:
+- In elaborazione
+- In preparazione
+- In transito
+- Consegnato
+Onestamente non ne ho mai usate, quindi mi sono basato sul tracciamento dei pacchi (come ad esempio quelli di Amazon e simili).
+
+dettagli_ordine -[one-to-one]-> ordine (ogni ordine è solo presente in un dettaglio ordine, ed ogni dettaglio ordine riguarda solo un ordine)
+Ho deciso di usare `on_delete=models.CASCADE` perché se si decide di eliminare esplicitamente un ordine, credo voglia dire che l'ordine è stato annullato, e quindi non è più necessario conservarne i dettagli (perché effettivamente non è mai avvenuto).
+Parto dal presupposto che se un ordine è effettivamente avvenuto, non verrà presa la decisione di eliminarlo (ovviamente riconosco che è molto possibile che ciò avvenga comunque per errore, e che quindi la soluzione corretta è di fare qualcosa tipo cambiare un campo "deleted" da False a True, che ho scelto di non fare per questioni di tempo).
+
+dettagli_ordine -[one-to-many]-> piatto (un piatto può essere presente in molti dettagli ordine, ma ogni dettaglio ordine contiene un piatto solo)
+
+---
+
+Ho creato il superuser per accedere alla pagina /admin usando le seguenti credenziali:
+- username: "admin"
+- password: "password"
+- email: ""
+Ovviamente è un obbrobrio dal punto di vista della sicurezza, ma essendo questo puramente un esercizio, ho pensato di minimizzare le probabilità di perdere l'accesso, dandogli appunto le credenziali più "standard" possibili.
+
+---
+
+Per i serializer e le view ho fatto affidamento al cheat sheet messo a nostra disposizione dal docente.
+Ad essere sincero non posso dire di aver completamente memorizzato la sintassi, quindi avere questo documento di riferimento (come del resto lo avrei nel mondo reale, assieme ad un'infinità di altre risorse) è stato fondamentale per rinfrescarmi la memoria ed applicare i principi che conosco concettualmente (in modo relativamente vago), ma che dovrei praticare ancora un bel po' prima di poterli applicare interamente a memoria.
+
+
+
+
+
+
+
+
+
+
+
+
+
