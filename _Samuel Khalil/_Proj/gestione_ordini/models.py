@@ -33,9 +33,7 @@ class Ordine(models.Model):
     testata = models.CharField(max_length=100, null=True, editable=False)
 
     def __str__(self):
-        questo_ristorante = self.ristorante_id
         return f"ordine #{self.id} [{self.data_ora.date()}] - {self.ristorante_id.nome} - {self.cliente_id.nome}"
-
 
 
 class OrdineDettaglio(models.Model):
@@ -45,7 +43,7 @@ class OrdineDettaglio(models.Model):
         on_delete=models.PROTECT,
         related_name="dettagli_ordine",
     )
-    # quantita = models.IntegerField(null=False) # TODO: has to be higher than 0; reconsider if `null=False` equals `NOT NULL`
+
     quantita = models.IntegerField(validators=[MinValueValidator(1)])
 
     def __str__(self):
