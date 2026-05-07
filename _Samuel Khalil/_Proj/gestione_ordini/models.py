@@ -30,11 +30,11 @@ class Ordine(models.Model):
         related_name="ordini"
     )
 
-    testata = models.CharField(max_length=100, null=True)
+    testata = models.CharField(max_length=100, null=True, editable=False)
 
     def __str__(self):
         questo_ristorante = self.ristorante_id
-        return f"ordine {self.data_ora}"
+        return f"ordine #{self.id} [{self.data_ora.date()}] - {self.ristorante_id.nome} - {self.cliente_id.nome}"
 
 
 

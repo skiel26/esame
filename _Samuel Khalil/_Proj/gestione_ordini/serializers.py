@@ -8,16 +8,17 @@ class ClienteSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class OrdineSerializer(serializers.ModelSerializer):
-    cliente_id = ClienteSerializer(many=False, read_only=True)
-    ristorante_id = RistoranteSerializer(many=False, read_only=True)
+    #cliente_id = ClienteSerializer(many=False, read_only=True)
+    #ristorante_id = RistoranteSerializer(many=False, read_only=True)
     testata = serializers.SerializerMethodField()
 
     class Meta:
         model = Ordine
-        fields = ["id", "data_ora", "stato", "cliente_id", "ristorante_id", "testata"]
+        fields = "__all__"
+        #fields = ["id", "data_ora", "stato", "cliente_id", "ristorante_id", "testata"]
 
     def get_testata(self, obj):
-        return f"{obj.clienti.get("cliente_id")} - {obj.clienti.get("cliente_id")}"
+        return f"ordine #{obj.id} [{obj.data_ora.date()}] - {obj.ristorante_id.nome} - {obj.cliente_id.nome}"
 
 class OrdineDettaglioSerializer(serializers.ModelSerializer):
     ordine_id = OrdineSerializer(many=False, read_only=True)

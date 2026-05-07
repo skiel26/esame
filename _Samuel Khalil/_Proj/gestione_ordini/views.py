@@ -19,7 +19,7 @@ class OrdineViewSet(viewsets.ModelViewSet):
         ordini = self.get_object().all()
         return Response(OrdineSerializer(ordini, many=True).data)
 
-    @action(methods=['POST'], detail=False)
+    @action(methods=['POST'], detail=True)
     def ordini(self, request, pk=None):
         ristorante = self.get_object()
         cliente = self.get_object()
